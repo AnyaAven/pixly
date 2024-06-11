@@ -19,11 +19,12 @@ ViteExpress.bind(app, server);
 const router: Router = new (Router as any)(); // <-- TODO Research later a better solve
 
 /** TEST HOME */
-app.get("/", async function (req, res, next) {
+router.get("/", async function (req, res, next) {
 
   return res.json({ "KEY": "VALUE" });
 });
 
+app.use("/", router)
 
 /** Handle 404 errors -- this matches everything */
 app.use(function (req, res, next) {
