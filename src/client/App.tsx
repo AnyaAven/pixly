@@ -5,7 +5,7 @@ import { basename } from "path";
 const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL || "http://localhost:3000/";
 
 export default function App() {
-  const [test, setTest] = useState({})
+  const [test, setTest] = useState <Record<string, string>>({})
 
   useEffect(
     function getTest(){
@@ -26,7 +26,7 @@ export default function App() {
         <Route path="/" element={
           <div>
             first page
-            { "KEY" in test && <div>test.KEY</div>}
+            { "KEY" in test && <div>{test.KEY}</div>}
           </div>}
           />
       </Routes>
