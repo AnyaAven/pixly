@@ -10,5 +10,5 @@ export default defineConfig({
   },
   root: "src/client",
   plugins: [tsconfigPaths(), react()],
-  server: { hmr: { port: 3001 } },
+
 });
