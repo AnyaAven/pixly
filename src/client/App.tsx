@@ -1,8 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { basename } from "path";
 
-const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL || "http://localhost:3000/";
+const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL || "http://localhost:3001/";
 
 export default function App() {
   const [test, setTest] = useState <Record<string, string>>({})
@@ -18,7 +17,8 @@ export default function App() {
       }
 
       fetchTest();
-    }, [])
+    }, []
+  )
 
   return (
     <BrowserRouter>
