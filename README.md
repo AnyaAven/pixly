@@ -19,6 +19,13 @@ To ensure that everything works great Node 20 should be used.
   npm run dev
   ```
 
+
+- Run React FE
+
+  ```sh
+  vite --open
+  ```
+
 - Visit <http://localhost:3000>
 
 - You can run tests with
