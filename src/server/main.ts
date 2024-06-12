@@ -158,11 +158,13 @@ router.post('/upload', upload.single('uploaded_file'), async (req, res) => {
 /** TEST TYPE ORM */
 router.get("/typeorm", async function (req, res, next) {
   const image = new Image();
+  image.filename = "new-name"
   image.height = 640;
   image.width = 480;
-  image.compressed = true;
+  image.orientation = "landscape";
   image.comment = "cybershoot";
-  image.orientation = "portrait";
+  image.description = "long description~~";
+
 
   // Returns id  - must await for id to be generated an added to image
   await image.save();

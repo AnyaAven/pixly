@@ -1,3 +1,9 @@
+# Stack
+
+DB: postgresQL
+ORM: typeorm
+FE: React typescript
+BE: Express typescript
 
 ## STEPS
 
@@ -45,6 +51,10 @@ fixed issue with sync:
 https://github.com/typeorm/typeorm/issues/9738
 
 ## EXIF Data
+image: make, model,
+could store the raw string
+  - or can have json column type too
+
 ``` json
 {
   exifData: {

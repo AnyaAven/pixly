@@ -14,6 +14,9 @@ export class Image extends BaseEntity{
     @PrimaryGeneratedColumn()
     id: number
 
+    @Column("varchar")
+    filename: string
+
     @Column("int")
     height: number
 
@@ -23,10 +26,10 @@ export class Image extends BaseEntity{
     @Column("text")
     orientation: string
 
-    @Column("boolean")
-    compressed: boolean
+    @Column({ type: "text", nullable: true})
+    description: string
 
-    @Column("text")
+    @Column({ type: "text", nullable: true })
     comment: string
 
     // if we wanted to join
