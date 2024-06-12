@@ -27,7 +27,7 @@ const AWS_BUCKET_NAME = process.env.AWS_BUCKET_NAME || "WRONG BUCKET NAME";
 /** AWS s3 client for bucket */
 const s3Client = new S3Client(
   {
-    region: "us-east-1",
+    region: "us-east-1", // TODO: change to process.env.AWS_REGION
     credentials: {
       accessKeyId: process.env.AWS_ACCESS_KEY || 'WRONG KEY',
       secretAccessKey: process.env.AWS_SECRET || 'WRONG SECRET'
@@ -146,7 +146,8 @@ router.get("/typeorm", async function (req, res, next) {
   image.comment = "cybershoot";
   image.orientation = "portrait";
 
-  await image.save() // must await for id to be generated an added to image
+  // Returns id  - must await for id to be generated an added to image
+  await image.save()
 
   return res.json({ "TEST": image });
 });
