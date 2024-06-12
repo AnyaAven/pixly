@@ -41,6 +41,9 @@ https://github.com/typeorm/typeorm/issues/9738
 
 ## S3 AWS
 
+### BUGS
+1. POSSIBLE FIX?: Could not access items in the bucket because the resource in the policy was only access the bucket not <bucket>/* <-- everything in the bucket
+
 Here's what I get back with 1 image uploaded directly to my pixly-anya bucket for pianos.jpg:
 
 ``` json
