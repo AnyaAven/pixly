@@ -19,7 +19,10 @@ import fs from 'fs';
 import "reflect-metadata";
 import { Image } from "models/image.js";
 import { AppDataSource } from "db/data-source.js";
-AppDataSource.initialize()
+AppDataSource.initialize();
+
+// exif metadata
+import ExifImage  from "exif";
 
 
 const AWS_BUCKET_NAME = process.env.AWS_BUCKET_NAME || "WRONG BUCKET NAME";
@@ -99,6 +102,18 @@ router.post('/upload', upload.single('uploaded_file'), async (req, res) => {
   //https://www.geeksforgeeks.org/difference-between-readfile-and-createreadstream-in-node-js/
   const fileStream = fs.createReadStream(filePath);
 
+  try {
+    ExifImage(filePath ,
+    function (error, exifData) {
+      if (error)
+        console.log('Error: ' + error.message);
+      else
+        console.log({exifData}); // Do something with your data!
+    });
+  } catch (error: any) {
+    console.log('Error: ' + error.message);
+  }
+
   const uploadParams = {
     Bucket: AWS_BUCKET_NAME,
     Key: `${file.originalname}`, //TODO: PUT AS A KEY FROM DB
@@ -107,10 +122,10 @@ router.post('/upload', upload.single('uploaded_file'), async (req, res) => {
   };
 
   console.log({ uploadParams });
+  let data; // <-- add ts type
   try {
-    const data = await s3Client.send(new PutObjectCommand(uploadParams));
+    data = await s3Client.send(new PutObjectCommand(uploadParams));
     console.log('Success PUT', data);
-    res.status(200).send({ message: 'File uploaded successfully', data });
 
     // Delete the temporary file
     fs.unlink(filePath, (err) => {
@@ -134,7 +149,10 @@ router.post('/upload', upload.single('uploaded_file'), async (req, res) => {
     });
   }
 
-  return res.json({ success: uploadParams });
+  return res.status(201).json(
+    { success: uploadParams,
+      s3: { message: 'File uploaded successfully', data }
+    });
 });
 
 /** TEST TYPE ORM */
@@ -147,7 +165,7 @@ router.get("/typeorm", async function (req, res, next) {
   image.orientation = "portrait";
 
   // Returns id  - must await for id to be generated an added to image
-  await image.save()
+  await image.save();
 
   return res.json({ "TEST": image });
 });

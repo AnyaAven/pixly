@@ -4,8 +4,13 @@
 
 
 
+
 ## FUTURE FEATURES
-multer can have multiple files uploaded
+
+- postgresQL full text
+https://stackoverflow.com/questions/59849262/postgresql-full-text-search-with-typeorm
+
+- multer can have multiple files uploaded
 https://github.com/expressjs/multer
     -.array(fieldname[, maxCount])
 Accept an array of files, all with the name fieldname. Optionally error out if more than maxCount files are uploaded. The array of files will be stored in req.files.
@@ -38,6 +43,74 @@ If you want ts to ignore checking, use:
 Use command `typeorm:sync`
 fixed issue with sync:
 https://github.com/typeorm/typeorm/issues/9738
+
+## EXIF Data
+``` json
+{
+  exifData: {
+    image: {
+      ImageWidth: 4000,
+      ImageHeight: 2252,
+      Make: 'samsung',
+      Model: 'SM-N986U',
+      Orientation: 1,
+      XResolution: 72,
+      YResolution: 72,
+      ResolutionUnit: 2,
+      Software: 'N986USQU2DUF2',
+      ModifyDate: '2021:08:12 23:00:54',
+      YCbCrPositioning: 1,
+      ExifOffset: 238,
+      GPSInfo: 696
+    },
+    thumbnail: {
+      ImageWidth: 512,
+      ImageHeight: 288,
+      Compression: 6,
+      XResolution: 72,
+      YResolution: 72,
+      ResolutionUnit: 2,
+      ThumbnailOffset: 916,
+      ThumbnailLength: 37775
+    },
+    exif: {
+      ExposureTime: 0.008403361344537815,
+      FNumber: 1.8,
+      ExposureProgram: 2,
+      ISO: 320,
+      ExifVersion: <Buffer 30 32 32 30>,
+      DateTimeOriginal: '2021:08:12 23:00:54',
+      CreateDate: '2021:08:12 23:00:54',
+      ShutterSpeedValue: 0.008403361344537815,
+      ApertureValue: 1.69,
+      BrightnessValue: 4.83,
+      ExposureCompensation: 0,
+      MaxApertureValue: 1.69,
+      MeteringMode: 2,
+      Flash: 0,
+      FocalLength: 7,
+      ColorSpace: 1,
+      ExifImageWidth: 4000,
+      ExifImageHeight: 2252,
+      ExposureMode: 0,
+      WhiteBalance: 0,
+      DigitalZoomRatio: 1,
+      FocalLengthIn35mmFormat: 25,
+      SceneCaptureType: 0,
+      ImageUniqueID: 'VA8XLNA00SM'
+    },
+    gps: {
+      GPSLatitudeRef: 'N',
+      GPSLatitude: [Array],
+      GPSLongitudeRef: 'W',
+      GPSLongitude: [Array]
+    },
+    interoperability: {},
+    makernote: {}
+  }
+}
+
+```
 
 ## S3 AWS
 
