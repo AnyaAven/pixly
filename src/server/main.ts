@@ -164,12 +164,20 @@ router.get("/typeorm", async function (req, res, next) {
   image.orientation = "landscape";
   image.comment = "cybershoot";
   image.description = "long description~~";
-
+  // const image = await Image.findOneOrFail({where: {id: 1}})
+  const images = await Image.find(
+    {select: {
+      id: true,
+      filename: true,
+      height: true,
+      width: true,
+    }}
+  )
 
   // Returns id  - must await for id to be generated an added to image
   await image.save();
 
-  return res.json({ "TEST": image });
+  return res.json({ "TEST": images });
 });
 
 app.use("/", router);

@@ -5,6 +5,7 @@ ORM: typeorm
 FE: React typescript
 BE: Express typescript
 
+
 ## STEPS
 
 
@@ -45,10 +46,27 @@ headerPairs - integer - For multipart forms, the max number of header key-value 
 If you want ts to ignore checking, use:
   //@ts-nocheck
 
+
 ### TYPEORM
 Use command `typeorm:sync`
 fixed issue with sync:
 https://github.com/typeorm/typeorm/issues/9738
+
+to query one or fail
+``` ts
+const image = await Image.findOneOrFail({where: {id: 1}})
+```
+to get all
+``` ts
+const images = await Image.find(
+    {select: {
+      id: true,
+      filename: true,
+      height: true,
+      width: true,
+    }}
+  )
+```
 
 ## EXIF Data
 image: make, model,
