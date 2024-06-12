@@ -30,14 +30,21 @@ parts - integer - For multipart forms, the max number of parts (fields + files).
 
 headerPairs - integer - For multipart forms, the max number of header key-value pairs to parse. Default: 2000 (same as node's http module).
 
+## LEARNING
+If you want ts to ignore checking, use:
+  //@ts-nocheck
 
+### TYPEORM
+Use command `typeorm:sync`
+fixed issue with sync:
+https://github.com/typeorm/typeorm/issues/9738
 
 ## S3 AWS
 
 Here's what I get back with 1 image uploaded directly to my pixly-anya bucket for pianos.jpg:
 
 ``` json
-Success {
+{
   '$metadata': {
     httpStatusCode: 200,
     requestId: 'WPYFKXS31J48WAS6',
@@ -50,7 +57,7 @@ Success {
     {
       Key: 'pianos.jpg',
       LastModified: 2024-06-11T22:11:01.000Z,
-      ETag: '"ea08504317afe7c98bdc83aa26ddf540"',
+      ETag: "ea08504317afe7c98bdc83aa26ddf540",
       Size: 2126062,
       StorageClass: 'STANDARD',
       Owner: [Object]
@@ -61,5 +68,46 @@ Success {
   MaxKeys: 1000,
   Name: 'pixly-anya',
   Prefix: ''
+}
+```
+
+UPLOAD ROUTE
+``` json
+{
+  uploadParams: {
+    Bucket: 'pixly-anya',
+    Key: 'canvas-bag.jpg',
+    Body: ReadStream {
+      fd: null,
+      path: 'uploads/15cce0ec234b93efff967138b758210b',
+      flags: 'r',
+      mode: 438,
+      start: undefined,
+      end: Infinity,
+      pos: undefined,
+      bytesRead: 0,
+      _events: [Object],
+      _readableState: [ReadableState],
+      _maxListeners: undefined,
+      _eventsCount: 1,
+      [Symbol(kFs)]: [Object],
+      [Symbol(kIsPerformingIO)]: false,
+      [Symbol(shapeMode)]: true,
+      [Symbol(kCapture)]: false
+    },
+    ContentType: 'image/jpeg'
+  }
+}
+Success PUT {
+  '$metadata': {
+    httpStatusCode: 200,
+    requestId: '06X39J2TV57AGSNN',
+    extendedRequestId: 'QdvCHipmRRKZnNs9DS1Zm5Fkyc1ZH7RuvCUeHPiaXDvGYIOOnussFOEVjgJyWnVh7gIXVXCkFxA=',
+    cfId: undefined,
+    attempts: 1,
+    totalRetryDelay: 0
+  },
+  ETag: '"8f83fc3e3ad8cebf5ed9f3db3d55e716"',
+  ServerSideEncryption: 'AES256'
 }
 ```

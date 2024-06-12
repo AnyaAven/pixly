@@ -12,10 +12,17 @@ import {
   PutObjectCommand,
 } from "@aws-sdk/client-s3";
 
-import multer from "multer"
+import multer from "multer";
 import fs from 'fs';
 
-const AWS_BUCKET_NAME = process.env.AWS_BUCKET_NAME || "WRONG BUCKET NAME"
+// typeorm
+import "reflect-metadata";
+import { Image } from "models/image.js";
+import { AppDataSource } from "db/data-source.js";
+AppDataSource.initialize()
+
+
+const AWS_BUCKET_NAME = process.env.AWS_BUCKET_NAME || "WRONG BUCKET NAME";
 
 /** AWS s3 client for bucket */
 const s3Client = new S3Client(
@@ -29,12 +36,12 @@ const s3Client = new S3Client(
 );
 
 /** PUT OBJECTS IN BUCKET */
-async function putObjectInBucket(bucketName: string, Key: string){
+async function putObjectInBucket(bucketName: string, Key: string) {
   // try {
-    const data = await s3Client.send(new PutObjectCommand(
-      { Bucket: bucketName, Key, Body: "heres the body" }));
-    console.log("Success PUT", data);
-    return data;
+  const data = await s3Client.send(new PutObjectCommand(
+    { Bucket: bucketName, Key, Body: "heres the body" }));
+  console.log("Success PUT", data);
+  return data;
 
   // } catch (err) {
   //   console.log("Error", err);
@@ -99,7 +106,7 @@ router.post('/upload', upload.single('uploaded_file'), async (req, res) => {
     ContentType: file.mimetype,
   };
 
-  console.log({uploadParams})
+  console.log({ uploadParams });
   try {
     const data = await s3Client.send(new PutObjectCommand(uploadParams));
     console.log('Success PUT', data);
@@ -127,7 +134,21 @@ router.post('/upload', upload.single('uploaded_file'), async (req, res) => {
     });
   }
 
-  return res.json({success: uploadParams})
+  return res.json({ success: uploadParams });
+});
+
+/** TEST TYPE ORM */
+router.get("/typeorm", async function (req, res, next) {
+  const image = new Image();
+  image.height = 640;
+  image.width = 480;
+  image.compressed = true;
+  image.comment = "cybershoot";
+  image.orientation = "portrait";
+
+  await image.save() // must await for id to be generated an added to image
+
+  return res.json({ "TEST": image });
 });
 
 app.use("/", router);
@@ -147,5 +168,6 @@ app.use(function (err: any, req: any, res: any, next: any) { // <-- TODO add typ
     error: { message, status },
   });
 });
+
 
 export { app };
