@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://pixly.com/upload.json",
+  "type": "object",
+  "properties": {
+    "filename": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "orientation": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "comment": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "filename",
+    "orientation",
+    "description",
+    "comment"
+  ]
+}
