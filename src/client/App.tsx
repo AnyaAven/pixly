@@ -10,6 +10,7 @@ import { tImageModel, tImageUpload } from "@/shared/types";
 
 import PixlyApi from "api/pixlyApi";
 import Home from "Home";
+import ImageList from "ImageList";
 
 export default function App() {
   console.log("App");
@@ -24,12 +25,11 @@ export default function App() {
       console.log("fetchImagesOnMount");
 
       async function getImages() {
-        const resp = await fetch(`${BASE_URL}/images/`);
-        const data: tImageModel[] = await resp.json();
+        const images = await PixlyApi.getImages();
 
-        setImages(data);
+        setImages(images);
         setIsLoading(false);
-        console.log("Fetched:", { data });
+        console.log("Fetched:", { images });
       }
 
       if (isLoading) {
@@ -38,7 +38,7 @@ export default function App() {
     }, []);
 
   async function uploadImage(formData: tImageUpload) {
-    console.log("APP: uploadImage");
+    console.log("APP: uploadImage", {formData});
 
     // let image: tImageModel;
     // try {
@@ -88,7 +88,7 @@ export default function App() {
           />
 
           <Route path="/images"
-            element={<ImageUploadForm uploadImage={uploadImage} />}
+            element={<ImageList />}
           />
 
           <Route path="/images/upload"
