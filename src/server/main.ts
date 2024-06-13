@@ -70,7 +70,7 @@ const server = app.listen(port, () => {
   console.log(`Server is listening on port ${port}...`);
 });
 
-ViteExpress.bind(app, server);
+ViteExpress.bind(app, server); //TODO: does this auto handle cors?
 
 const router: Router = new (Router as any)(); // <-- TODO Research later a better solve
 

@@ -26,7 +26,7 @@ const upload = multer({ dest: 'tempUploads/' });
  *  height,
  *  width,
  *  orientation,
- *  isEditted,
+ *  isEdited,
  *  description,
  *  comment},...]}
  *
@@ -42,14 +42,14 @@ router.get("/", async function (req, res, next) {
         height: true,
         width: true,
         orientation: true,
-        isEditted: true,
+        isEdited: true,
         description: true,
         comment: true,
       }
     }
   );
 
-  return res.json(images);
+  return res.json({ images });
 });
 
 
@@ -63,57 +63,57 @@ router.get("/", async function (req, res, next) {
  *  height,
  *  width,
  *  orientation,
- *  isEditted,
+ *  isEdited,
  *  description,
  *  comment
  * }}
 */
 router.post("/upload", upload.single('uploadedFile'),
   async function (req, res, next) {
-  console.log("ROUTE: images/upload", {req});
+    console.log("ROUTE: images/upload", { req });
 
-  if (!req.file) {
-    throw new BadRequestError("No file uploaded")
-  }
+    if (!req.file) {
+      throw new BadRequestError("No file uploaded");
+    }
 
-  const validator = jsonschema.validate(
-    req.body,
-    imageUploadSchema,
-    { required: true },
-  );
-  if (!validator.valid) {
-    const errs = validator.errors.map(e => e.stack);
-    throw new BadRequestError(errs.join(""));
-  }
+    const validator = jsonschema.validate(
+      req.body,
+      imageUploadSchema,
+      { required: true },
+    );
+    if (!validator.valid) {
+      const errs = validator.errors.map(e => e.stack);
+      throw new BadRequestError(errs.join(""));
+    }
 
-  const filePath = req.file.path;
-  const fileStream = fs.createReadStream(filePath);
+    const filePath = req.file.path;
+    const fileStream = fs.createReadStream(filePath);
 
-  // // collect meta data
-  // const {width, height} = getWidthAndHeight(filePath);
+    // // collect meta data
+    // const {width, height} = getWidthAndHeight(filePath);
 
-  // add new Image to DB
-  const image = new Image();
-  image.filename = req.body.filename
-  image.height = 0// height ? height : 0;
-  image.width = 0 //width ? width : 0;
-  image.orientation = req.body.orientation;
-  image.comment = req.body.comment || "";
-  image.description = req.body.description || "";
-  await image.save();
-  console.log({ image });
+    // add new Image to DB
+    const image = new Image();
+    image.filename = req.body.filename;
+    image.height = 0;// height ? height : 0;
+    image.width = 0; //width ? width : 0;
+    image.orientation = req.body.orientation;
+    image.comment = req.body.comment || "";
+    image.description = req.body.description || "";
+    await image.save();
+    console.log({ image });
 
-  const uploadParams = {
-    Bucket: AWS_BUCKET_NAME,
-    Key: `${image.id}`,
-    Body: fileStream,
-    ContentType: req.file.mimetype,
-  };
-  console.log({ uploadParams });
-  await putObjectInBucket(uploadParams);
+    const uploadParams = {
+      Bucket: AWS_BUCKET_NAME,
+      Key: `${image.id}`,
+      Body: fileStream,
+      ContentType: req.file.mimetype,
+    };
+    console.log({ uploadParams });
+    await putObjectInBucket(uploadParams);
 
-  return res.status(201).json({ image });
-});
+    return res.status(201).json({ image });
+  });
 
 
 export default router;

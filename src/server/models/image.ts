@@ -26,8 +26,8 @@ export class Image extends BaseEntity{
     @Column("text")
     orientation: string
 
-    @Column({ name: "is_editted", type: "boolean", default: false })
-    isEditted: boolean
+    @Column({ name: "is_edited", type: "boolean", default: false })
+    isEdited: boolean
 
     @Column({ type: "text", nullable: true})
     description: string

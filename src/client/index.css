@@ -8,7 +8,7 @@ body {
   padding: 0;
   height: 100vh;
   overflow: scroll;
-  background: url(/public/pixly-background.jpg) no-repeat;
+  background: url(/pixly-background.jpg) no-repeat;
   background-size: cover;
 }
 

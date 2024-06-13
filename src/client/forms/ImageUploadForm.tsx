@@ -152,7 +152,7 @@ export function ImageUploadForm({ uploadImage }: tImageUploadFormProps): JSX.Ele
 
           <div className="ImageUploadForm-ImagePickerEditor">
             <ImagePickerEditor
-              //key={submission.} // <--- makes a new instance of this comment on change
+              key={submission.amount} // <--- makes a new instance of this comment on change
               config={{ borderRadius: '8px' }}
 
               imageChanged={handleImageChange}

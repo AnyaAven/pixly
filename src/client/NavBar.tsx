@@ -15,10 +15,10 @@ function NavBar() {
         </Link>
         <Nav className="ms-auto" navbar>
           <NavItem>
-            <NavLink to="/images">images</NavLink>
+            <NavLink to="/images" end>images</NavLink>
           </NavItem>
           <NavItem>
-            <NavLink to="/images/upload">Upload!</NavLink>
+            <NavLink to="/images/upload" end>Upload!</NavLink>
           </NavItem>
         </Nav>
       </div>

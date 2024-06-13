@@ -8,8 +8,8 @@ export type tImageModel = {
   width: number,
   orientation: "landscape" | "portrait",
   isEditted: boolean,
-  description?: string,
-  comment?: string,
+  description?: string | null,
+  comment?: string | null,
 }
 
 /** Useful for PutObjectCommand from "@aws-sdk/client-s3" */
