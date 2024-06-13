@@ -1,7 +1,7 @@
 /** General Utils */
 
 /** Capitalize the first char in a string */
-export function capitalize(string: string) {
+export function capitalize(string: string): string {
   if (string === "") return "";
 
   return string[0].toUpperCase() + string.slice(1);
@@ -10,12 +10,12 @@ export function capitalize(string: string) {
 /** Check if all the vals in an object are not empty strings
  * returns: boolean
 */
-export function isValsFilled(obj: Record<string, any>) {
+export function isValsFilled(obj: Record<string, any>): boolean {
   return Object.values(obj).every(v => v);
 }
 
 /** Add an 's' to word string if count is > 1 */
-export function pluralize(count: number, word: string) {
+export function pluralize(count: number, word: string): string {
   if (count > 1) return word + "s";
   else return word;
 }
@@ -23,9 +23,8 @@ export function pluralize(count: number, word: string) {
 
 /** Convert base64 string to Blob */
 //https://stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript
-export function convertBase64ToBlob(base64Image: string) {
+export function convertBase64ToBlob(base64Image: string): Blob {
   console.log("_convertBase64ToBlob", { base64Image });
-  if (!base64Image) return;
   // Split into two parts
   const parts = base64Image.split(';base64,');
 

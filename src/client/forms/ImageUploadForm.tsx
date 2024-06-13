@@ -46,7 +46,7 @@ type tImageUploadFormProps = {
  *
  */
 
-export function ImageUploadForm({ uploadImage }: tImageUploadFormProps) {
+export function ImageUploadForm({ uploadImage }: tImageUploadFormProps): JSX.Element {
   console.log("* ImageUploadForm");
 
   const initialFormData = {
@@ -115,13 +115,27 @@ export function ImageUploadForm({ uploadImage }: tImageUploadFormProps) {
     }));
   }
 
-  /** Handle image change for ImagePickerEditor callback  */
-  function handleImageChange(base64Image: string) {
+  /** Handle image change for ImagePickerEditor callback
+   * This is called on mount and on "save" button for the Image Editor
+   *
+   * Sometimes the argument passed to it has been null or "" on mount.
+   * This function handles that situation while requiring base64Image to be
+   * a string with the length > 1
+  */
+  function handleImageChange(base64Image: unknown): void {
     console.log("handleImageChange",);
+    // basse64Image arg is being handled by an external library.
+    // They do not have the types for the possible arguments
+    // We are hoping for a base64String and that has proven successful on
+    // save of the imageEditor.
+    if(
+      typeof base64Image  !== "string" ||
+       base64Image?.length === 0 ||
+       base64Image === null) return;
 
     const blob = convertBase64ToBlob(base64Image);
-    if (!blob) return;
     const editedFile = convertBlobToFile(blob);
+
     console.log("Edited file:", editedFile);
     setFormData({ ...formData, uploadedFile: editedFile });
   }
