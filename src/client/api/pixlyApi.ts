@@ -50,8 +50,22 @@ class PixlyApi {
    * Get images
    * returns: [image,...]
    */
-  static async getImages() {
-    const res = await this.request(`images`);
+  static async getImages(): Promise<tImageModel[]> {
+    const res = await this.request(`images/`);
+    console.log("Pixly api: getImages", {images: res})
+    return res.images;
+  }
+
+  /** Get images by search term
+   *
+   * term: "apple"
+   *
+   * returns all images with name partially matching the term (case-insensitive)
+  */
+
+  static async getImagesBySearch(term: string) {
+    //FIXME full text search
+    const res = await this.request(`images/`, { nameLike: term }, "GET");
     return res.images;
   }
 
