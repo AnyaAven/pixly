@@ -47,9 +47,75 @@ headerPairs - integer - For multipart forms, the max number of header key-value 
 
 3. Make sure to ALWAYS remove temp files from /uploads
 
+4. instead of fetching for ImageEditor
+  41
+https://stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript
+Following is my TypeScript code which can be converted easily into JavaScript and you can use
+
+5. Fix ImageEditor
+
+THIS ONE WORKS but I'd not like to fetch. Use the stackoverflow
+```
+
+          <ImagePickerEditor
+              key={formData.filename} // <---TODO: figure out what key I want to change when it changes to create a new instance
+              config={{ borderRadius: '8px' }}
+
+              imageChanged={(editedImage) => {
+                console.log("Edited image URL:", editedImage);
+                fetch(editedImage)
+                  .then(res => {
+                    console.log("FIRST THEN");
+                    return res.blob()
+                  })
+                  .then(blob => {
+                    console.log("Fetched blob:", blob);
+                    const editedFile = new File([blob], "name", { type: blob.type });
+                    console.log("Edited file:", editedFile);
+                    setFormData({ ...formData, uploadedFile: editedFile });
+                  });
+              }}
+            />
+
+```
+/**
+ * Convert BASE64 to BLOB
+ * @param base64Image Pass Base64 image data to convert into the BLOB
+ */
+private convertBase64ToBlob(base64Image: string) {
+  // Split into two parts
+  const parts = base64Image.split(';base64,');
+
+  // Hold the content type
+  const imageType = parts[0].split(':')[1];
+
+  // Decode Base64 string
+  const decodedData = window.atob(parts[1]);
+
+  // Create UNIT8ARRAY of size same as row data length
+  const uInt8Array = new Uint8Array(decodedData.length);
+
+  // Insert all character code into uInt8Array
+  for (let i = 0; i < decodedData.length; ++i) {
+    uInt8Array[i] = decodedData.charCodeAt(i);
+  }
+
+  // Return BLOB image after conversion
+  return new Blob([uInt8Array], { type: imageType });
+}
+
+6. Fix content type to send formdata multi vs sending json
+
+7. Split out the package.json to FE and BE
+
+8. tsconfig.json
+
 ## LEARNING
 If you want ts to ignore checking, use:
   //@ts-nocheck
+
+If working with an external package component and they don't have it typed
+explain in depth what your experience with the types are in docstrings and have the type of unknown
 
 
 ### TYPEORM

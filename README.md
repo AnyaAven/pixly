@@ -5,6 +5,9 @@
 
 ## 🔧 Setup
 
+- Set .env in the client folder and top level
+client .env-> VITE_REACT_APP_AWS_BASE_URL
+
 To ensure that everything works great Node 20 should be used.
 
 - Install dependencies
