@@ -2,15 +2,26 @@ import "./ImageUploadForm.css";
 import { useState } from "react";
 import React from "react";
 
-import { isValsFilled, pluralize } from "../helpers/utils";
+import {
+  isValsFilled,
+  pluralize,
+  convertBase64ToBlob,
+  convertBlobToFile,
+} from "../helpers/utils";
 import Alert from "../Alert";
 
 //Cards
-import { Card, CardBody, CardTitle } from "reactstrap";
+import {
+  Card,
+  CardBody, CardTitle
+} from "reactstrap";
 //Forms
 import { Form, FormGroup, Input, Label, Button } from "reactstrap";
 
 import { tImageUpload } from "@/shared/types";
+
+import ImagePickerEditor from 'react-image-picker-editor';
+import 'react-image-picker-editor/dist/index.css';
 
 type tImageUploadFormProps = {
   uploadImage: (formData: tImageUpload) => void;
@@ -52,14 +63,22 @@ export function ImageUploadForm({ uploadImage }: tImageUploadFormProps) {
     amount: 0,
   });
 
-  const isFilled = isValsFilled(formData);
+  // Check if all required fields are filled in
+  const isFilled = isValsFilled({
+    0: formData.uploadedFile,
+    1: formData.filename,
+    2: formData.orientation,
+  });
 
   /** Update form inputs. */
-  function handleChange(evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>): void {
+  function handleChange(
+    evt: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>)
+    : void {
     const { name, value } = evt.target;
 
     if (name === "uploadedFile") {
       const file = (evt.target as HTMLInputElement).files?.[0] || null;
+      console.log("File selected:", file);
       setFormData((formData) => ({
         ...formData,
         uploadedFile: file,
@@ -79,10 +98,11 @@ export function ImageUploadForm({ uploadImage }: tImageUploadFormProps) {
 
     if (!formData.uploadedFile) {
       console.error("File is required");
-      return
+      return;
     }
-    console.log("handleSubmit", {formData})
-    uploadImage(formData);
+
+    console.log("handleSubmit", { formData });
+    uploadImage(formData as tImageUpload);
 
     // Reset form
     setFormData(initialFormData);
@@ -95,6 +115,17 @@ export function ImageUploadForm({ uploadImage }: tImageUploadFormProps) {
     }));
   }
 
+  /** Handle image change for ImagePickerEditor callback  */
+  function handleImageChange(base64Image: string) {
+    console.log("handleImageChange",);
+
+    const blob = convertBase64ToBlob(base64Image);
+    if (!blob) return;
+    const editedFile = convertBlobToFile(blob);
+    console.log("Edited file:", editedFile);
+    setFormData({ ...formData, uploadedFile: editedFile });
+  }
+
   return (
     <section className="ImageUploadForm col-md-4">
       <Card>
@@ -102,6 +133,13 @@ export function ImageUploadForm({ uploadImage }: tImageUploadFormProps) {
           <CardTitle className="fw-bold text-center">
             Upload an image!
           </CardTitle>
+
+          <ImagePickerEditor
+            key={submission.amount} // <--- makes a new instance of this comment on change
+            config={{ borderRadius: '8px'}}
+
+            imageChanged={handleImageChange}
+          />
 
           <Form onSubmit={handleSubmit}>
             <FormGroup>
@@ -113,6 +151,7 @@ export function ImageUploadForm({ uploadImage }: tImageUploadFormProps) {
                 value={formData.filename}
                 onChange={handleChange}
                 placeholder="new-image"
+                required
               />
 
               {/* DESCRIPTION */}
@@ -143,20 +182,11 @@ export function ImageUploadForm({ uploadImage }: tImageUploadFormProps) {
                 value={formData.orientation}
                 onChange={handleChange}
                 type="select"
+                required
               >
                 <option value="landscape">Landscape</option>
                 <option value="portrait">Portrait</option>
               </Input>
-
-              {/* FILE */}
-              <Label for="ImageUploadForm-file">File:</Label>
-              <Input
-                id="ImageUploadForm-file"
-                name="uploadedFile"
-                onChange={handleChange}
-                type="file"
-                encType="multipart/form-data"
-              />
             </FormGroup>
 
             {submission.isSubmitted && (
