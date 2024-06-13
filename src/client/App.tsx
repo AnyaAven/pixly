@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Loader from "Loader";
 import NavBar from "NavBar";
@@ -9,6 +9,7 @@ const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL || "http://localhost:30
 import { tImageModel, tImageUpload } from "@/shared/types";
 
 import PixlyApi from "api/pixlyApi";
+import Home from "Home";
 
 export default function App() {
   console.log("App");
@@ -76,30 +77,30 @@ export default function App() {
   if (isLoading) return <Loader />;
 
   return (
-    <BrowserRouter>
+    <div className="App">
 
       <NavBar></NavBar>
+      <main>
+        <Routes>
 
-      <Routes>
-        <Route path="/" element={
-          <div>
-            first page
-            <form action={`${BASE_URL}/upload`} encType="multipart/form-data" method="post">
-              <div className="form-group">
-                <input type="file" className="form-control-file" name="uploaded_file" />
-                <input type="text" className="form-control" placeholder="Number of speakers" name="nspeakers" />
-                <input type="submit" value="Get me the stats!" className="btn btn-default" />
-              </div>
-            </form>
+          <Route path="/"
+            element={<Home />}
+          />
 
-          </div>
-        }
-        />
+          <Route path="/images"
+            element={<ImageUploadForm uploadImage={uploadImage} />}
+          />
 
-        <Route path="/images/upload"
-          element={<ImageUploadForm uploadImage={uploadImage} />}
-        />
-      </Routes>
-    </BrowserRouter>
+          <Route path="/images/upload"
+            element={<ImageUploadForm uploadImage={uploadImage} />}
+          />
+
+          <Route
+            path="*"
+            element={<p>Hmmm. I can't seem to find what you want.</p>} />
+        </Routes>
+      </main>
+    </div>
+
   );
 }

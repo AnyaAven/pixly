@@ -1,0 +1,11 @@
+:root {
+  --linearGlassGreen: linear-gradient(135deg, hsla(141, 26%, 52%, 0.6), hsla(142, 33%, 48%, 0.8));
+}
+
+.Home h1, .Home h3{
+  border-radius: 3px;
+
+  background: var(--linearGlassGreen);
+  backdrop-filter: blur(20px);
+
+}
