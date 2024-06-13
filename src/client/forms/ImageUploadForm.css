@@ -1,0 +1,7 @@
+.ImageUploadForm .card {
+  background-color: #097c76;
+  color: #f0f2f5;
+  border: 20px solid rgba(106, 227, 181, 0.63);
+  box-shadow: inset 0 0 0 2px #ffffff;
+  box-sizing: border-box;
+}
