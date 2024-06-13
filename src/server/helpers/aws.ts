@@ -1,6 +1,8 @@
 /** Helper commands to interact with s3 AWS */
 import { tUploadParamsAWS } from "@/shared/types.js";
-import { removeFile } from "./metadata.js";
+
+import dotenv from 'dotenv';
+dotenv.config();
 
 import {
   S3Client,
