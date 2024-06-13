@@ -5,7 +5,6 @@ import Loader from "Loader";
 import NavBar from "NavBar";
 import ImageUploadForm from "forms/ImageUploadForm";
 
-const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL || "http://localhost:3001";
 import { tImageModel, tImageUpload } from "@/shared/types";
 
 import PixlyApi from "api/pixlyApi";
@@ -37,41 +36,18 @@ export default function App() {
       }
     }, []);
 
-  async function uploadImage(formData: tImageUpload) {
+  async function uploadImage(formData: tImageUpload): Promise<void> {
     console.log("APP: uploadImage", {formData});
 
-    // let image: tImageModel;
-    // try {
-    //   image = await PixlyApi.uploadImage(formData);
-    // } catch (err) {
-    //   setErrors(err as [])
-    //   return;
-    // }
-    //TODO: move to PixlyApi and handle sending in formdata and not just json
-    const data = new FormData();
-    data.append("uploadedFile", formData.uploadedFile!);
-    data.append("filename", formData.filename);
-    data.append("description", formData.description);
-    data.append("comment", formData.comment);
-    data.append("orientation", formData.orientation);
-
+    let image: tImageModel;
     try {
-      const response = await fetch("http://localhost:3001/images/upload", {
-        method: "POST",
-        body: data,
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const image: tImageModel = await response.json();
-      console.log("APP: uploadImage", { image });
-      setImages((currImages) => [...currImages, image]);
+      image = await PixlyApi.uploadImage(formData);
     } catch (err) {
-      console.error("Failed to upload image", err);
-      setErrors(err as []);
+      setErrors(err as [])
+      return;
     }
+    console.log("APP: uploadImage", { image });
+    setImages((currImages) => [...currImages, image]);
   }
 
   if (isLoading) return <Loader />;
