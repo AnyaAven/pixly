@@ -134,12 +134,17 @@ export function ImageUploadForm({ uploadImage }: tImageUploadFormProps) {
             Upload an image!
           </CardTitle>
 
-          <ImagePickerEditor
-            key={submission.amount} // <--- makes a new instance of this comment on change
-            config={{ borderRadius: '8px'}}
+          {/* CHOOSE FILE & IMAGE EDITOR */}
 
-            imageChanged={handleImageChange}
-          />
+          <div className="ImageUploadForm-ImagePickerEditor">
+            <ImagePickerEditor
+              //key={submission.} // <--- makes a new instance of this comment on change
+              config={{ borderRadius: '8px' }}
+
+              imageChanged={handleImageChange}
+            />
+          </div>
+
 
           <Form onSubmit={handleSubmit}>
             <FormGroup>
