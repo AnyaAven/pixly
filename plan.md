@@ -42,6 +42,11 @@ parts - integer - For multipart forms, the max number of parts (fields + files).
 
 headerPairs - integer - For multipart forms, the max number of header key-value pairs to parse. Default: 2000 (same as node's http module).
 
+2. update json schemas orientation to only be "landscape" or "portriat"
+  - update to have description and comment but that it's not required
+
+3. Make sure to ALWAYS remove temp files from /uploads
+
 ## LEARNING
 If you want ts to ignore checking, use:
   //@ts-nocheck
