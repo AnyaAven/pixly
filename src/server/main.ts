@@ -17,9 +17,11 @@ import fs from 'fs';
 
 // typeorm
 import "reflect-metadata";
-import { Image } from "models/image.js";
+// Initialize
 import { AppDataSource } from "db/data-source.js";
 AppDataSource.initialize();
+
+import { Image } from "models/image.js";
 
 // exif metadata
 import ExifImage  from "exif";
@@ -56,6 +58,11 @@ async function putObjectInBucket(bucketName: string, Key: string) {
 const app = express();
 app.use(bodyParser.json());
 app.use(ViteExpress.static());
+
+
+/** ROUTES *********************************************************/
+import imagesRoutes from "./routes/images.js"
+app.use("/images", imagesRoutes);
 
 const port = Number(process.env.PORT) || 3000;
 
