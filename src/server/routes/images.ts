@@ -11,7 +11,7 @@ import imageUploadSchema from "../schemas/imageUploadSchema.json" with {type: "j
 
 const router = Router();
 
-import { getWidthAndHeight } from "helpers/metadata.js";
+import { getWidthAndHeight, removeFile } from "helpers/metadata.js";
 import { putObjectInBucket } from "helpers/aws.js";
 
 import multer from "multer";
@@ -70,7 +70,7 @@ router.get("/", async function (req, res, next) {
 */
 router.post("/upload", upload.single('uploadedFile'),
   async function (req, res, next) {
-    console.log("ROUTE: images/upload", { req });
+    console.log("ROUTE: images/upload");
 
     if (!req.file) {
       throw new BadRequestError("No file uploaded");
@@ -111,6 +111,9 @@ router.post("/upload", upload.single('uploadedFile'),
     };
     console.log({ uploadParams });
     await putObjectInBucket(uploadParams);
+
+    // remove temp file
+    removeFile(filePath)
 
     return res.status(201).json({ image });
   });
