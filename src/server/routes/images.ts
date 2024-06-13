@@ -1,5 +1,6 @@
 /** Routes for images. */
-
+import dotenv from 'dotenv';
+dotenv.config();
 import { Router } from "express";
 import { BadRequestError } from "../expressError.js";
 
@@ -17,7 +18,7 @@ import multer from "multer";
 import fs from 'fs';
 
 const AWS_BUCKET_NAME = process.env.AWS_BUCKET_NAME || "WRONG BUCKET NAME";
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ dest: 'tempUploads/' });
 
 /** GET / => { images: [{
  *  id,
@@ -67,9 +68,9 @@ router.get("/", async function (req, res, next) {
  *  comment
  * }}
 */
-router.post("/upload", upload.single('uploaded_file'),
+router.post("/upload", upload.single('uploadedFile'),
   async function (req, res, next) {
-  console.log("ROUTE: images/upload");
+  console.log("ROUTE: images/upload", {req});
 
   if (!req.file) {
     throw new BadRequestError("No file uploaded")
@@ -85,29 +86,28 @@ router.post("/upload", upload.single('uploaded_file'),
     throw new BadRequestError(errs.join(""));
   }
 
-  const file = req.file;
-  const filePath = file.path;
+  const filePath = req.file.path;
   const fileStream = fs.createReadStream(filePath);
 
-  // collect meta data
-  const {width, height} = getWidthAndHeight(filePath);
+  // // collect meta data
+  // const {width, height} = getWidthAndHeight(filePath);
 
   // add new Image to DB
   const image = new Image();
   image.filename = req.body.filename
-  image.height = height ? height : 0;
-  image.width = width ? width : 0;
+  image.height = 0// height ? height : 0;
+  image.width = 0 //width ? width : 0;
   image.orientation = req.body.orientation;
-  image.comment = req.body.comment;
-  image.description = req.body.description;
-  const id = await image.save();
+  image.comment = req.body.comment || "";
+  image.description = req.body.description || "";
+  await image.save();
   console.log({ image });
 
   const uploadParams = {
     Bucket: AWS_BUCKET_NAME,
-    Key: `${id}`,
+    Key: `${image.id}`,
     Body: fileStream,
-    ContentType: file.mimetype,
+    ContentType: req.file.mimetype,
   };
   console.log({ uploadParams });
   await putObjectInBucket(uploadParams);
