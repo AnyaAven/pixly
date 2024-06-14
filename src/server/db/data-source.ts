@@ -10,8 +10,8 @@ export const AppDataSource = new DataSource({
   username: "anyaaven",
   password: "",
   database: "pixly",
-  synchronize: true,
-  logging: true,
+  synchronize: true, // <--Indicates if database schema should be auto created on every application launch.
+  logging: false, // <----SET TO TRUE IF NEEDED
   entities: [Image],
   subscribers: [],
   migrations: [],
