@@ -20,7 +20,7 @@ app.use(ViteExpress.static());
 import imagesRoutes from "./routes/images.js"
 app.use("/images", imagesRoutes);
 
-const port = Number(process.env.PORT) || 3000;
+const port = Number(process.env.PORT) || 3001;
 
 const server = app.listen(port, () => {
   console.log(`Server is listening on port ${port}...`);
