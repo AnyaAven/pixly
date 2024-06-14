@@ -5,6 +5,7 @@ import { Router } from "express";
 import { BadRequestError } from "../expressError.js";
 
 import { Image } from "models/image.js";
+import { AppDataSource } from "db/data-source.js";
 
 import jsonschema from "jsonschema";
 import imageUploadSchema from "../schemas/imageUploadSchema.json" with {type: "json"};
@@ -52,6 +53,48 @@ router.get("/", async function (req, res, next) {
   return res.json({ images });
 });
 
+
+/** GET / => { images: [{
+ *  id,
+ *  filename,
+ *  height,
+ *  width,
+ *  orientation,
+ *  isEdited,
+ *  description,
+ *  comment},...]}
+ *
+ * Returns a list of images filter by query string in DB
+ *
+ * Filter by words seperated by a space in the query string.
+ * -> "inspire social"
+ **/
+
+router.get("/search", async function (req, res, next) {
+  const queryCopy = req.query;
+  console.log({ queryCopy });
+
+  if(typeof queryCopy.q !== "string") {
+    throw new BadRequestError("No query string provided")
+  }
+  const searchTerms =
+    queryCopy
+      .q?.trim().split(' ')
+      .map(term => term.trim()).join(' & ');
+
+  // :query with matching key of object
+
+  //The @@ operator is used to compare a tsquery value (the query) with a
+  // tsvector value (the document) to determine if the document matches the query.
+  const imageRepository = AppDataSource.getRepository(Image);
+  const images = await imageRepository
+    .createQueryBuilder("image")
+    .where("image.document_with_weights @@ to_tsquery(:query)",
+      { query: searchTerms })
+    .getMany();
+
+  return res.json({ images, len: images.length });
+});
 
 /** POST / => Add a new Image to AWS and DB
  *
@@ -113,7 +156,7 @@ router.post("/upload", upload.single('uploadedFile'),
     await putObjectInBucket(uploadParams);
 
     // remove temp file
-    removeFile(filePath)
+    removeFile(filePath);
 
     return res.status(201).json({ image });
   });

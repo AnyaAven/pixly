@@ -35,6 +35,9 @@ export class Image extends BaseEntity{
     @Column({ type: "text", nullable: true })
     comment: string
 
+    // Won't be included in any selects
+    @Column({ type: "tsvector", select: false })
+    document_with_weights: any;
 
     // if we wanted to join
     // @OneToOne(() => Photo)

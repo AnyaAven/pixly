@@ -1,4 +1,4 @@
-
+import SearchForm from "./forms/SearchForm";
 import ImageCardList from "./ImageCardList";
 import PixlyApi from "api/pixlyApi";
 import Alert from "Alert";
@@ -94,7 +94,7 @@ function ImageList() {
 
   return (
     <div className="ImageList">
-      {/* <SearchForm handleSearch={handleSearch} /> */}
+      <SearchForm handleSearch={handleSearch} />
       {imagesData.searchTerm === ""
         ? <h1>All images</h1>
         : <h1>Search results for "{imagesData.searchTerm}"</h1>

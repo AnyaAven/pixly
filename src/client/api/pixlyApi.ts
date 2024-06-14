@@ -81,14 +81,17 @@ class PixlyApi {
 
   /** Get images by search term
    *
-   * term: "apple"
+   * term: "inspire social" <-- seperate by spaces to search multiple words
+   * Searches in the filename, description, and comment
    *
-   * returns all images with name partially matching the term (case-insensitive)
+   * returns all images with name partially matching the term(s) (case-insensitive)
+   * Including words similar to search term
+   * --> "inspire" will search for "inspire", "inspiring", "inspires"
   */
 
   static async getImagesBySearch(term: string) {
-    //FIXME full text search
-    const res = await this.request({endpoint: `images/`, data: { nameLike: term } });
+    const res = await this.request(
+      {endpoint: `images/search`, data: { q: term }, method: "GET" });
     return res.images;
   }
 
