@@ -46,6 +46,9 @@ router.get("/", async function (req, res, next) {
         isEdited: true,
         description: true,
         comment: true,
+      },
+      order: {
+        id: "DESC",
       }
     }
   );
