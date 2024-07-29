@@ -57,7 +57,7 @@ To ensure that everything correctly works, Node 20 should be used.
   npm run start
   ```
 
-- Visit <http://localhost:3000>
+- Visit <http://http://localhost:5173/> or Vite's logged URL in the terminal
 
 - You can run tests with
 
