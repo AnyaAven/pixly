@@ -2,6 +2,7 @@ import SearchForm from "./forms/SearchForm";
 import ImageCardList from "./ImageCardList";
 import PixlyApi from "api/pixlyApi";
 import Alert from "Alert";
+import "./ImageList.css"
 
 import { useEffect, useState } from "react";
 import Loader from "Loader";

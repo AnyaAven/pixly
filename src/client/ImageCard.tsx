@@ -48,12 +48,12 @@ function ImageCard({ image }: { image: tImageModel; }): JSX.Element {
             <CardTitle tag="h5">
             {filename}
             </CardTitle>
-            <CardSubtitle
+            {/* <CardSubtitle
               className="mb-2 text-muted"
               tag="h6"
             >
               {height} x {width}
-            </CardSubtitle>
+            </CardSubtitle> */}
 
             {(description !== null || description !== "" )&&
               <CardText>
