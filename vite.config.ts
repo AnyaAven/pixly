@@ -7,6 +7,8 @@ export default defineConfig({
   test: {
     root: process.cwd(),
     env: { DB_FILE: "test.db" },
+    environment: 'jsdom',
+    setupFiles: ['./src/tests/setupTests.js'],
   },
   root: "src/client",
   plugins: [tsconfigPaths(), react()],
