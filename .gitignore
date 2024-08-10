@@ -3,3 +3,5 @@ node_modules
 tempUploads
 uploads
 /.idea
+coverage
+dist
