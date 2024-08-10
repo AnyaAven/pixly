@@ -76,15 +76,19 @@ export function ImageUploadForm({ uploadImage }: tImageUploadFormProps): JSX.Ele
     : void {
     const { name, value } = evt.target;
 
-    if (name === "uploadedFile") {
-      const file = (evt.target as HTMLInputElement).files?.[0] || null;
-      console.log("File selected:", file);
-      setFormData((formData) => ({
-        ...formData,
-        uploadedFile: file,
-      }));
-      return;
-    }
+    // This code is not needed and should be safe to delete.
+    // It was prior code when the ImagePickerEditor used a form wrapper and label
+    // We no longer have a label element with name equal to uploadedFile.
+
+    // if (name === "uploadedFile") {
+    //   const file = (evt.target as HTMLInputElement).files?.[0] || null;
+    //   console.log("File selected:", file);
+    //   setFormData((formData) => ({
+    //     ...formData,
+    //     uploadedFile: file,
+    //   }));
+    //   return;
+    // }
 
     setFormData((formData) => ({
       ...formData,

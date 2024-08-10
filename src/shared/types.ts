@@ -7,7 +7,7 @@ export type tImageModel = {
   height: number,
   width: number,
   orientation: "landscape" | "portrait",
-  isEditted: boolean,
+  isEdited: boolean,
   description?: string | null,
   comment?: string | null,
 }
