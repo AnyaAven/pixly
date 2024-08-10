@@ -55,17 +55,16 @@ function ImageCard({ image }: { image: tImageModel; }): JSX.Element {
               {height} x {width}
             </CardSubtitle> */}
 
-            {(description !== null || description !== "" )&&
+            {description &&
               <CardText>
                 Description: {description}
               </CardText>
             }
-            {(comment !== null  || comment !== "" )&&
+            {comment &&
               <CardText>
-              Comment: {comment}
-            </CardText>
+                Comment: {comment}
+              </CardText>
             }
-
             {/* <Button>
               Button
             </Button> */}
