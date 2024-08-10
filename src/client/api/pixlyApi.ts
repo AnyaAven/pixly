@@ -34,7 +34,7 @@ class PixlyApi {
 
     const url = new URL(`${BASE_URL}/${endpoint}`);
 
-    // Add heads if we are sending over json
+    // Add heads if we are sending over JSON
     const headers = contentType === "json"
       ? {
         'content-type': 'application/json',
@@ -61,7 +61,6 @@ class PixlyApi {
       const message = (await resp.json()).error.message;
       throw Array.isArray(message) ? message : [message];
     }
-
     return await resp.json();
   }
 
@@ -76,12 +75,13 @@ class PixlyApi {
   static async getImages(): Promise<tImageModel[]> {
     const res = await this.request({endpoint: `images/`});
     console.log("Pixly api: getImages", { images: res });
+
     return res.images;
   }
 
   /** Get images by search term
    *
-   * term: "inspire social" <-- seperate by spaces to search multiple words
+   * term: "inspire social" <-- separate by spaces to search multiple words
    * Searches in the filename, description, and comment
    *
    * returns all images with name partially matching the term(s) (case-insensitive)
@@ -89,7 +89,7 @@ class PixlyApi {
    * --> "inspire" will search for "inspire", "inspiring", "inspires"
   */
 
-  static async getImagesBySearch(term: string) {
+  static async getImagesBySearch(term: string): Promise<tImageModel[]> {
     const res = await this.request(
       {endpoint: `images/search`, data: { q: term }, method: "GET" });
     return res.images;
@@ -98,9 +98,9 @@ class PixlyApi {
   /** Get image details on an image by id.
   */
 
-  static async getImage(id: number) {
+  static async getImage(id: number): Promise<tImageModel>  {
     const res = await this.request({ endpoint: `images/${id}`});
-    return res.company;
+    return res.image;
   }
 
   /**
