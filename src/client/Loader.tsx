@@ -25,6 +25,8 @@ export default function Loader({ color = "#000" }) {
   */
 
   return (
-    <ReactLoading type="spinningBubbles" color="#000" />
+      <div className="Loader">
+        <ReactLoading type="spinningBubbles" color="#000"/>
+      </div>
   );
 }
